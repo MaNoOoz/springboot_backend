@@ -19,34 +19,27 @@ import java.util.List;
 
 @Service
 public class QuoteService {
+
     Logger logger = LoggerFactory.getLogger(QuoteService.class);
 
-
-    @Autowired
+    public QuoteService(QuoteRepo quoteRepo) {
+        this.quoteRepo = quoteRepo;
+    }
     private QuoteRepo quoteRepo;
 
-
-    public List<Quote> getListOfQuotes() throws IOException {
-//        List<Quote> quotes2 = new ArrayList<>();
-//
+    // =====================================================
+    public List<Quote> getListOfQuotes() {
         List<Quote> quotes = new ArrayList<>();
-//
-////        List<Quote> quotes1 = intiDummyData();
-////        quoteRepo.saveAll(quotes1);
         quoteRepo.findAll().forEach(quotes::add);
         return quotes;
-//        return quoteRepo.g();
     }
 
-
-
-
-
+    // =====================================================
     public void saveQuote(Quote quote) {
         quoteRepo.save(quote);
     }
 
-
+    // =====================================================
     public void deleteQuote(long id) {
 
         if (!quoteRepo.existsById(id)) {
@@ -57,6 +50,7 @@ public class QuoteService {
         }
     }
 
+    // =====================================================
     public List<Quote> getQuoteWithAuthor(@Param(value = "author") String author) {
         List<Quote> quoteList = new ArrayList<>();
         quoteList = quoteRepo.findQuotesByAuthor(author);
@@ -64,30 +58,11 @@ public class QuoteService {
         return quoteList;
     }
 
+    // =====================================================
     public Quote getQuote(long id) {
         return quoteRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Quote Not Found"));
     }
-
-
-//public void updateQuote(Quote quote, long id) {
-////        Optional<Quote> quoteOptional = quoteRepo.findById(id);
-//    Quote q = quoteRepo.findById(id).orElseThrow(() -> new IllegalStateException(
-//            "not found" + id + ""
-//    ));
-//    if (q != null) {
-//        q.setId(quote.getId());
-//    }
-////        if (quoteOptional.isEmpty()){
-////            System.out.println("SS");
-////        }
-////        else {
-////            quote.setId(55);
-////            quote.setQuoteText(quote.getQuoteText());
-////            quoteRepo.save(quote);
-////        }
-//
-//
-//}
+    // =====================================================
 
 }
 
