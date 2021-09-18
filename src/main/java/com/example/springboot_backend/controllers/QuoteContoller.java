@@ -6,11 +6,8 @@ package com.example.springboot_backend.controllers;
 import com.example.springboot_backend.models.Quote;
 import com.example.springboot_backend.service.QuoteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.List;
 
 
@@ -25,24 +22,29 @@ public class QuoteContoller {
         this.quoteService = quoteService;
     }
 
+
+    // GET All======================================================
     // http://192.168.1.2:8080/api/v1/quotes
     @GetMapping(path = "/api/v1/quotes")
-    List<Quote> getQuotes() throws IOException {
+    List<Quote> getQuotes()  {
 
-        return quoteService.getListOfQuotes();
+        return quoteService.getAllQuotes();
     }
+    // GET One ======================================================
 
     @GetMapping(path = "api/v1/quotes/{quoteId}")
     Quote getQuote(@PathVariable(name = "quoteId") long id) {
-        return quoteService.getQuote(id);
+        return quoteService.getQuoteById(id);
+    }
+    // GET Query ======================================================
+
+//    http://192.168.1.2:8080/api/v1/quotes?author=al walid
+    @GetMapping(path = "api/v1/quotes", params = {"author"})
+    List<Quote> getQuotesByAuthor(@RequestParam(value = "author", required = false) String author) {
+        return quoteService.getQuoteWithAuthor(author);
     }
 
-    //http://192.168.1.2:8080/api/v1/quotes?author=al walid
-//    @GetMapping(path = "api/v1/quotes", params = {"author"})
-//    List<Quote> getQuotesByAuthor(@RequestParam(value = "author", required = false) String author) {
-//        return quoteService.getQuoteWithAuthor(author);
-//    }
-
+    // Add New Query ======================================================
 
     @PostMapping(path = "api/v1/quotes")
     void addNewQuoteOrUpdate(@RequestBody(required = true) Quote quote) {
@@ -50,11 +52,19 @@ public class QuoteContoller {
     }
 
 
+    // Delete New Query ======================================================
+
     //    http://192.168.1.2:8080/api/v1/quotes/1
     @DeleteMapping(path = "api/v1/quotes/{quoteId}")
     void removeQuote(@PathVariable(name = "quoteId") long id) {
         quoteService.deleteQuote(id);
     }
 
+    // Update  ======================================================
 
+//    @PutMapping(path = "api/v1/quotes/{id}")
+//    public ResponseEntity updateQuote( @PathVariable(name = "id") long id ,@RequestBody Quote expense) {
+//        quoteService.updateQuote(id,expense);
+//        return ResponseEntity.status(HttpStatus.OK).build();
+//    }
 }
