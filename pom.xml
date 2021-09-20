@@ -15,7 +15,7 @@
     <name>springboot_backend</name>
     <description>springboot_backend</description>
     <properties>
-        <java.version>16</java.version>
+        <java.version>11</java.version>
     </properties>
     <dependencies>
         <dependency>
